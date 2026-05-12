@@ -1,0 +1,15 @@
+Was ist Window Accuracy und was ist File Accuracy? kannst du mir das kurz erklären?
+Kurz erklärt:
+
+•  Window Accuracy
+◦  Definition: Genauigkeit auf Ebene einzelner Zeitfenster (z. B. 512 Samples), die aus jeder Datei ausgeschnitten werden.
+◦  Berechnung: Jedes Fenster wird separat klassifiziert; Accuracy = korrekt klassifizierte Fenster / alle Fenster.
+◦  Nutzen: Misst, wie gut das Modell kurze Segmente erkennt; liefert viele Stichproben.
+◦  Caveat: Ein einzelnes fehlerhaftes Fenster kann eine Datei „verschlechtern“; statistisch abhängig (viele Fenster aus derselben Datei).
+•  File Accuracy
+◦  Definition: Genauigkeit pro Datei, indem alle Fenster einer Datei zu einer einzigen Vorhersage aggregiert werden.
+◦  Aggregation (in unserem Code): Mittel der Softmax-Wahrscheinlichkeiten pro Klasse über alle Fenster der Datei, dann argmax. (Alternativ: Mehrheitsvotum.)
+◦  Berechnung: Datei gilt als korrekt, wenn die aggregierte Vorhersage dem Datei‑Label entspricht; Accuracy = korrekt klassifizierte Dateien / alle Dateien.
+◦  Nutzen: Robuster und praxisnäher (entscheidet, ob eine gesamte Aufnahme korrekt erkannt wird); verhindert, dass viele korrelierte Fenster die Metrik verzerren.
+
+In Berichten empfiehlt sich File Accuracy als Hauptmetrik; Window Accuracy als Zusatz, um zu sehen, wie stabil die Fensterklassifikation ist.
